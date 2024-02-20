@@ -206,7 +206,7 @@ class GithubNotifications {
       this.httpSession.user_agent = 'gnome-shell-extension github notification via libsoup'
 
       this.authManager = new Soup.AuthManager()
-      this.auth = new Soup.AuthBasic({ host: `api.${this.domain}`, realm: 'Github Api' }) // TODO: patch the type
+      this.auth = new Soup.AuthBasic({ authority: `api.${this.domain}`, realm: 'Github Api' })
 
       this.authManager.use_auth(this.authUri, this.auth)
       // Soup.Session.prototype.add_feature.call(this.httpSession, this.authManager)
