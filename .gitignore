@@ -1,1 +1,4 @@
-gnome-notifications.zip
+*.zip
+node_modules
+/dist
+/.vscode
