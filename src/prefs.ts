@@ -5,7 +5,7 @@ import Gtk from 'gi://Gtk'
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js'
 
 export default class GitHubNotificationsPreferences extends ExtensionPreferences {
-  public fillPreferencesWindow(_window: Adw.Window): void {
+  public fillPreferencesWindow(_window: Adw.PreferencesWindow): void {
     const settings = this.getSettings()
     const widget = buildPrefsWidget(settings)
     _window.insert_before(widget, null)
