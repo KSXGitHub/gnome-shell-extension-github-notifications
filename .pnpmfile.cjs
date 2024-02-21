@@ -4,9 +4,12 @@
 function modifyDependencies(dependencies) {
   for (const name in dependencies) {
     if (!name.startsWith('@girs/')) continue
-    const [firstChar, ...rest] = dependencies[name]
+    const oldValue = dependencies[name]
+    const firstChar = oldValue[0]
+    if (!firstChar) continue
+    const rest = oldValue.slice(1)
     if (firstChar !== '^' && firstChar !== '~') continue
-    dependencies[name] = '=' + rest.join('')
+    dependencies[name] = '=' + rest
   }
 }
 
