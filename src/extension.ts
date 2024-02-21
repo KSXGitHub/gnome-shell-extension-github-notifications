@@ -8,7 +8,7 @@ import St from 'gi://St'
 
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
-import { MessageTray, SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
+import { SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
 
 import buildUri from './buildUri.js'
 import { error } from './log.js'
