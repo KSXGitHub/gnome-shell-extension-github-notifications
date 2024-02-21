@@ -10,7 +10,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import { SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
 
-import { error } from './log.js'
+import { info, error } from './log.js'
 
 class GithubNotifications {
   private token: string = ''
@@ -216,8 +216,9 @@ class GithubNotifications {
           }
           this.planFetch(this.interval(), false)
           if (response.status_code == 200) {
-            let data = JSON.parse(response.response_body.data)
-            this.updateNotifications(data)
+            // let data = JSON.parse(response.response_body.data)
+            // this.updateNotifications(data)
+            this.updateNotifications(response)
           }
           return
         }
@@ -247,22 +248,29 @@ class GithubNotifications {
     })
   }
 
-  updateNotifications(data) {
-    let lastNotificationsCount = this.notifications.length
+  private updateNotifications(response: Soup.Message): void {
+    const data = JSON.parse(response.response_body.data)
 
+    if (!Array.isArray(data)) {
+      for (const line of response.response_body.data.split('\n')) {
+        info('[response] ' + line)
+      }
+      error('GitHub API did not return an array')
+      return
+    }
+
+    const lastNotificationsCount = this.notifications?.length ?? 0
     this.notifications = data
     this.label && this.label.set_text('' + data.length)
     this.checkVisibility()
     this.alertWithNotifications(lastNotificationsCount)
   }
 
-  alertWithNotifications(lastCount) {
-    let newCount = this.notifications.length
-
+  private alertWithNotifications(lastCount: number): void {
+    const newCount = this.notifications.length
     if (newCount && newCount > lastCount && this.showAlertNotification) {
       try {
-        let message = 'You have ' + newCount + ' new notifications'
-
+        const message = `You have ${newCount} new notifications`
         this.notify('Github Notifications', message)
       } catch (e) {
         error('Cannot notify ' + e)
@@ -273,7 +281,6 @@ class GithubNotifications {
   private notify(title: string, message: string): void {
     let notification: Notification
 
-    // this.addNotificationSource()
     if (!this._source) {
       this._source = new SystemNotificationSource('GitHub Notification', 'github')
       this._source.connect('destroy', () => {
@@ -296,18 +303,6 @@ class GithubNotifications {
     // this._source.notify(notification)
     this._source.pushNotification(notification)
   }
-
-  // private addNotificationSource(): void {
-  //   if (this._source) {
-  //     return
-  //   }
-
-  //   this._source = new SystemNotificationSource('GitHub Notification', 'github')
-  //   this._source.connect('destroy', () => {
-  //     this._source = null
-  //   })
-  //   Main.messageTray.add(this._source)
-  // }
 }
 
 export default class GithubNotificationsExtension extends Extension {
