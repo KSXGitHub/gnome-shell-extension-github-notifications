@@ -29,8 +29,7 @@
       "@girs/gnome-shell@45.0.0-beta9": "patches/@girs__gnome-shell@45.0.0-beta9.patch"
     },
     "overrides": {
-      "@girs/gio-2.0": "$@girs/gio-2.0",
-      "@girs/soup-3.0": "$@girs/soup-2.4"
+      "@girs/gio-2.0": "$@girs/gio-2.0"
     }
   }
 }
