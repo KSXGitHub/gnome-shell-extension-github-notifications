@@ -31,3 +31,7 @@ just install
 ## Credits
 
 This is a fork of https://github.com/alexduf/gnome-github-notifications that supports (only) GNOME 45.
+
+## License
+
+[GPL-2.0](https://github.com/KSXGitHub/gnome-shell-extension-github-notifications/blob/master/LICENSE)
