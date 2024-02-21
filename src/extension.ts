@@ -175,7 +175,6 @@ class GithubNotifications {
       this.auth = new Soup.AuthBasic({ host: `api.${this.domain}`, realm: 'Github Api' })
 
       this.authManager.use_auth(this.authUri, this.auth)
-      // Soup.Session.prototype.add_feature.call(this.httpSession, this.authManager)
       this.httpSession.add_feature(this.authManager)
     }
   }
@@ -187,10 +186,6 @@ class GithubNotifications {
       this.retryAttempts = 0
     }
     this.stopLoop()
-    // this.timeout = Mainloop.timeout_add_seconds(delay, () => {
-    //     this.fetchNotifications();
-    //     return false;
-    // });
     this.timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, delay, () => {
       this.fetchNotifications()
       return false
