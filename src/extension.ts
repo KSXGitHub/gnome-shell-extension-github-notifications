@@ -10,7 +10,6 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import { SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
 
-import buildUri from './buildUri.js'
 import { error } from './log.js'
 
 class GithubNotifications {
@@ -35,7 +34,7 @@ class GithubNotifications {
   private box: St.BoxLayout
   private domain: string
   private label: St.Label
-  private authUri: GLib.Uri
+  private authUri: Soup.URI
   private authManager: Soup.AuthManager
   private auth: Soup.AuthBasic
 
@@ -158,14 +157,13 @@ class GithubNotifications {
   }
 
   private initHttp(): void {
-    this.authUri = buildUri({
-      scheme: 'https',
-      user: this.handle,
-      password: this.token,
-      host: `api.${this.domain}`,
-      path: '/notifications',
-      query: this.showParticipatingOnly ? 'participating=1' : null,
-    })
+    let url = `https://api.${this.domain}/notifications`
+    if (this.showParticipatingOnly) {
+      url = `https://api.${this.domain}/notifications?participating=1`
+    }
+    this.authUri = new Soup.URI(url)
+    this.authUri.set_user(this.handle)
+    this.authUri.set_password(this.token)
 
     if (this.httpSession) {
       this.httpSession.abort()
@@ -174,7 +172,7 @@ class GithubNotifications {
       this.httpSession.user_agent = 'gnome-shell-extension github notification via libsoup'
 
       this.authManager = new Soup.AuthManager()
-      this.auth = new Soup.AuthBasic({ authority: `api.${this.domain}`, realm: 'Github Api' })
+      this.auth = new Soup.AuthBasic({ host: `api.${this.domain}`, realm: 'Github Api' })
 
       this.authManager.use_auth(this.authUri, this.auth)
       // Soup.Session.prototype.add_feature.call(this.httpSession, this.authManager)
@@ -214,7 +212,7 @@ class GithubNotifications {
             this.lastModified = response.response_headers.get('Last-Modified')
           }
           if (response.response_headers.get('X-Poll-Interval')) {
-            this.githubInterval = response.response_headers.get('X-Poll-Interval')
+            this.githubInterval = Number(response.response_headers.get('X-Poll-Interval') ?? 0)
           }
           this.planFetch(this.interval(), false)
           if (response.status_code == 200) {
