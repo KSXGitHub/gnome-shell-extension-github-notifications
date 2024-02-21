@@ -6,6 +6,7 @@ settings:
 
 overrides:
   '@girs/gio-2.0': '=2.78.0-3.2.7'
+  '@girs/soup-3.0': '=2.74.3-3.2.7'
 
 patchedDependencies:
   '@girs/gnome-shell@45.0.0-beta9':
@@ -49,9 +50,9 @@ dependencies:
   '@girs/shell-13':
     specifier: '=13.0.0-3.2.7'
     version: 13.0.0-3.2.7
-  '@girs/soup-3.0':
-    specifier: '=3.4.4-3.2.7'
-    version: 3.4.4-3.2.7
+  '@girs/soup-2.4':
+    specifier: '=2.74.3-3.2.7'
+    version: 2.74.3-3.2.7
   '@girs/st-13':
     specifier: '=13.0.0-3.2.7'
     version: 13.0.0-3.2.7
@@ -713,8 +714,8 @@ packages:
       '@girs/pangocairo-1.0': 1.0.0-3.2.8
     dev: false
 
-  /@girs/soup-3.0@3.4.4-3.2.7:
-    resolution: {integrity: sha512-g0wZX/xPgINy4gv9BsoOytjQjdUfUWmSvvOaL8l+3apWwUHGnBvA99oEye5PHh2xCEaZHhM4564DGy51TZC0/g==}
+  /@girs/soup-2.4@2.74.3-3.2.7:
+    resolution: {integrity: sha512-z/JunN6gC9qQKWCuzYuwhwFjBexMDbLnYw8J5RSPx0Jquen4mQMamCIsAUcenVV4PKVas+eDoV7Pi9qGjkZ7KQ==}
     dependencies:
       '@girs/gio-2.0': 2.78.0-3.2.7
       '@girs/gjs': 3.2.8
