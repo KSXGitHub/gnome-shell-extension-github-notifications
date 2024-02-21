@@ -10,13 +10,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import { MessageTray, SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
 
-function info(message: string): void {
-  console.info('[GITHUB NOTIFICATIONS EXTENSION][INFO] ' + message)
-}
-
-function error(message: string): void {
-  console.error('[GITHUB NOTIFICATIONS EXTENSION][ERROR] ' + message)
-}
+import { error } from './log.js'
 
 function buildUri(options: {
   readonly flags?: GLib.UriFlags
