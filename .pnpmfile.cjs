@@ -1,7 +1,8 @@
 /**
- * @param {Record.<String, String>} dependencies
+ * @param {Record.<String, String>} [dependencies]
  */
 function pinGirs(dependencies) {
+  if (!dependencies) return
   for (const name in dependencies) {
     if (!name.startsWith('@girs/')) continue
     const oldValue = dependencies[name]
@@ -16,9 +17,9 @@ function pinGirs(dependencies) {
 /**
  * @param {Object} pkg
  * @param {String} pkg.name
- * @param {Record.<String, String>} pkg.dependencies
- * @param {Record.<String, String>} pkg.devDependencies
- * @param {Record.<String, String>} pkg.peerDependencies
+ * @param {Record.<String, String>} [pkg.dependencies]
+ * @param {Record.<String, String>} [pkg.devDependencies]
+ * @param {Record.<String, String>} [pkg.peerDependencies]
  */
 function readPackage(pkg) {
   if (pkg.name.startsWith('@girs/')) {
