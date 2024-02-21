@@ -17,9 +17,9 @@ tsc: deps
 # Copy non-TypeScript files from src to dist
 assets:
   mkdir -pv dist
-  cp -v src/metadata.json dist/metadata.json
-  cp -v src/stylesheet.css dist/stylesheet.css
-  cp -v src/github.svg dist/github.svg
+  cp -v src/metadata.json dist
+  cp -v src/stylesheet.css dist
+  cp -v src/github.svg dist
 
 # Compile schemas
 schemas:
