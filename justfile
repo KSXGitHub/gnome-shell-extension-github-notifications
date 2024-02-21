@@ -17,13 +17,18 @@ tsc: deps
 # Copy non-TypeScript files from src to dist
 assets:
   mkdir -pv dist
-  cp -rv src/schemas dist/schemas
   cp -v src/metadata.json dist/metadata.json
   cp -v src/stylesheet.css dist/stylesheet.css
   cp -v src/github.svg dist/github.svg
 
+# Compile schemas
+schemas:
+  mkdir -pv dist
+  cp -rv src/schemas dist
+  glib-compile-schemas dist/schemas
+
 # Build the extension in dist
-build: assets tsc
+build: assets schemas tsc
 
 # Delete the build result
 clean:
