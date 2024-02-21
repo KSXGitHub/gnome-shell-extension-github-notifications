@@ -4,7 +4,6 @@
 function modifyDependencies(dependencies) {
   for (const name in dependencies) {
     if (!name.startsWith('@girs/')) continue
-    if (name === '@girs/gjs' || name === '@girs/gnome-shell') continue
     const [firstChar, ...rest] = dependencies[name]
     if (firstChar !== '^' && firstChar !== '~') continue
     dependencies[name] = '=' + rest.join('')
