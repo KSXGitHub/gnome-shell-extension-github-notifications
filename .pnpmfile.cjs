@@ -1,7 +1,7 @@
 /**
  * @param {Record.<String, String>} dependencies
  */
-function modifyDependencies(dependencies) {
+function pinGirs(dependencies) {
   for (const name in dependencies) {
     if (!name.startsWith('@girs/')) continue
     const oldValue = dependencies[name]
@@ -22,9 +22,9 @@ function modifyDependencies(dependencies) {
  */
 function readPackage(pkg) {
   if (pkg.name.startsWith('@girs/')) {
-    modifyDependencies(pkg.dependencies)
-    modifyDependencies(pkg.devDependencies)
-    modifyDependencies(pkg.peerDependencies)
+    pinGirs(pkg.dependencies)
+    pinGirs(pkg.devDependencies)
+    pinGirs(pkg.peerDependencies)
   }
   return pkg
 }
