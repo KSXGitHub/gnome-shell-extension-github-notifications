@@ -2,10 +2,18 @@ import Gio from 'gi://Gio'
 import Gtk from 'gi://Gtk'
 
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js'
+import { type ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js'
 
 export default class GitHubNotificationsPreferences extends ExtensionPreferences {
+  #prefsWidget: Gtk.Widget
+
+  public constructor(metadata: ExtensionMetadata) {
+    super(metadata)
+    this.#prefsWidget = buildPrefsWidget(this.getSettings())
+  }
+
   public getPreferencesWidget (): Gtk.Widget {
-    return buildPrefsWidget(this.getSettings())
+    return this.#prefsWidget
   }
 }
 
