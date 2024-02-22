@@ -1,6 +1,6 @@
 # gnome-github-notifications
 
-Integrate github's notifications within the gnome desktop environment
+Integrate github's notifications within the gnome desktop environment.
 
 ## Development
 
@@ -34,4 +34,4 @@ This is a fork of https://github.com/alexduf/gnome-github-notifications that sup
 
 ## License
 
-[GPL-2.0](https://github.com/KSXGitHub/gnome-shell-extension-github-notifications/blob/master/LICENSE)
+[GPL-2.0](https://github.com/KSXGitHub/gnome-shell-extension-github-notifications/blob/master/LICENSE).
