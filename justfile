@@ -14,6 +14,14 @@ deps:
 tsc: deps
   pnpm exec tsc
 
+# Check and compile Rust in release mode
+rust:
+  cargo clippy --release --locked -- -D warnings
+  cargo fmt --check
+  cargo build --release --locked
+  mkdir -pv dist/bin
+  cp -v target/release/gnome-shell-extension-github-notifications dist/bin
+
 # Copy non-TypeScript files from src to dist
 assets:
   mkdir -pv dist
@@ -28,12 +36,13 @@ schemas:
   glib-compile-schemas dist/schemas
 
 # Build the extension in dist
-build: assets schemas tsc
+build: assets schemas tsc rust
 
 # Delete the build result
 clean:
   rm -rfv dist
   rm -fv .tsbuildinfo
+  rm -rfv target/release
 
 # Clean and then build
 clean-build: clean build
