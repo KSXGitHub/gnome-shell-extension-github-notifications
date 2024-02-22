@@ -33,6 +33,7 @@ build: assets schemas tsc
 # Delete the build result
 clean:
   rm -rfv dist
+  rm -fv .tsbuildinfo
 
 # Clean and then build
 clean-build: clean build
