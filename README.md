@@ -1,4 +1,4 @@
-# gnome-github-notifications
+# GNOME Extension: GitHub Notifications
 
 Integrate github's notifications within the gnome desktop environment.
 
