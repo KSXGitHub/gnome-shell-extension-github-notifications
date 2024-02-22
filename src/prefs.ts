@@ -1,14 +1,11 @@
-import type Adw from 'gi://Adw'
 import Gio from 'gi://Gio'
 import Gtk from 'gi://Gtk'
 
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js'
 
 export default class GitHubNotificationsPreferences extends ExtensionPreferences {
-  public fillPreferencesWindow(prefWin: Adw.PreferencesWindow): void {
-    const settings = this.getSettings()
-    const widget = buildPrefsWidget(settings)
-    prefWin.insert_before(widget, null)
+  public getPreferencesWidget (): Gtk.Widget {
+    return buildPrefsWidget(this.getSettings())
   }
 }
 
