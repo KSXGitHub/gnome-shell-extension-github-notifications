@@ -2,6 +2,7 @@
 name = "gnome-shell-extension-github-notifications"
 version = "0.0.0"
 edition = "2021"
+publish = false
 
 [lib]
 name = "gnome_shell_extension_github_notifications"
