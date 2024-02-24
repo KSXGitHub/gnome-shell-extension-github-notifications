@@ -103,15 +103,20 @@ export type SuccessValue = {
     "last_modified"?: string;
     "poll_interval"?: string;
 };
+export type UnauthorizedValue = {
+    "status_code": U16;
+};
 export type JSONValue = (null | boolean | number | string | (JSONValue)[] | {
     [key:string]:JSONValue;
 });
-export type FailureValue = {
+export type OtherFailureValue = {
     "status_code": U16;
     "response"?: JSONValue;
 };
 export type Output = (({
     "type": "Success";
 } & SuccessValue) | ({
-    "type": "Failure";
-} & FailureValue));
+    "type": "Unauthorized";
+} & UnauthorizedValue) | ({
+    "type": "OtherFailure";
+} & OtherFailureValue));

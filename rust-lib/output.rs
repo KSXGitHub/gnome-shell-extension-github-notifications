@@ -8,7 +8,8 @@ use typescript_type_def::TypeDef;
 #[serde(tag = "type")]
 pub enum Output {
     Success(SuccessValue),
-    Failure(FailureValue),
+    Unauthorized(UnauthorizedValue),
+    OtherFailure(OtherFailureValue),
 }
 
 #[derive(Debug, Display)]
@@ -27,16 +28,21 @@ impl TryFrom<Response> for Output {
         let status_code = status.as_u16();
         let headers = response.headers();
 
+        if status == StatusCode::UNAUTHORIZED {
+            let value = UnauthorizedValue { status_code };
+            return value.pipe(Output::Unauthorized).pipe(Ok);
+        }
+
         if !status.is_success() && status != StatusCode::NOT_MODIFIED {
             let response = response
                 .text()
                 .ok()
                 .and_then(|text| serde_json::from_str::<serde_json::Value>(&text).ok());
-            let value = FailureValue {
+            let value = OtherFailureValue {
                 status_code,
                 response,
             };
-            return value.pipe(Output::Failure).pipe(Ok);
+            return value.pipe(Output::OtherFailure).pipe(Ok);
         }
 
         let last_modified = headers
@@ -73,7 +79,12 @@ pub struct SuccessValue {
 }
 
 #[derive(Debug, Serialize, TypeDef)]
-pub struct FailureValue {
+pub struct UnauthorizedValue {
+    pub status_code: u16,
+}
+
+#[derive(Debug, Serialize, TypeDef)]
+pub struct OtherFailureValue {
     pub status_code: u16,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub response: Option<serde_json::Value>,
