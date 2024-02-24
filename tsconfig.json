@@ -4,7 +4,7 @@
     "moduleResolution": "NodeNext",
     "strict": false,
     "strictNullChecks": true,
-    "rootDir": "src",
+    "rootDir": "typescript",
     "outDir": "dist",
     "resolveJsonModule": true,
     "experimentalDecorators": true,

@@ -1,4 +1,4 @@
-uuid := `jq -r .uuid < src/metadata.json`
+uuid := `jq -r .uuid < assets/metadata.json`
 extension-dir := "~/.local/share/gnome-shell/extensions/"
 install-path := extension-dir + uuid
 helper-command := "gnome-shell-extension-github-notifications"
@@ -13,7 +13,7 @@ deps:
 
 # Generate TypeScript definitions to interact with the helper command
 bindings:
-  cargo run --bin=generate-typescript-definitions --release --locked -- src/bindings/types.ts
+  cargo run --bin=generate-typescript-definitions --release --locked -- typescript/bindings/types.ts
 
 # Compile TypeScript code to JavaScript
 tsc: deps bindings
@@ -27,17 +27,17 @@ rust:
   mkdir -pv dist/bin
   cp -v target/release/{{helper-command}} dist/bin
 
-# Copy non-TypeScript files from src to dist
+# Copy non-TypeScript files from assets to dist
 assets:
   mkdir -pv dist
-  cp -v src/metadata.json dist
-  cp -v src/stylesheet.css dist
-  cp -v src/github.svg dist
+  cp -v assets/metadata.json dist
+  cp -v assets/stylesheet.css dist
+  cp -v assets/github.svg dist
 
 # Compile schemas
 schemas:
   mkdir -pv dist
-  cp -rv src/schemas dist
+  cp -rv assets/schemas dist
   glib-compile-schemas dist/schemas
 
 # Build the extension in dist

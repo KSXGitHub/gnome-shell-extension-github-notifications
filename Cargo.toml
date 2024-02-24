@@ -5,15 +5,15 @@ edition = "2021"
 
 [lib]
 name = "gnome_shell_extension_github_notifications"
-path = "src/lib.rs"
+path = "rust-lib/lib.rs"
 
 [[bin]]
 name = "gnome-shell-extension-github-notifications"
-path = "src/main.rs"
+path = "rust-bin/main.rs"
 
 [[bin]]
 name = "generate-typescript-definitions"
-path = "src/bindings.rs"
+path = "rust-bin/bindings.rs"
 
 [dependencies]
 clap = { version = "4.5.1", features = ["derive"] }
