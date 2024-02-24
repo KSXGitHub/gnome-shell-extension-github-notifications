@@ -94,7 +94,7 @@ pub struct Item {
 
 #[derive(Debug, Deserialize, Serialize, TypeDef)]
 pub struct Repository {
-    pub id: i64,
+    pub id: u64,
     pub node_id: String,
     pub name: String,
     pub full_name: String,
@@ -147,7 +147,7 @@ pub struct Repository {
 #[derive(Debug, Deserialize, Serialize, TypeDef)]
 pub struct Owner {
     pub login: String,
-    pub id: i64,
+    pub id: u64,
     pub node_id: String,
     pub avatar_url: String,
     pub gravatar_id: String,

@@ -9,10 +9,10 @@ export type Input = {
     "token": string;
 };
 export type U16 = number;
-export type I64 = number;
+export type U64 = number;
 export type Owner = {
     "login": string;
-    "id": I64;
+    "id": U64;
     "node_id": string;
     "avatar_url": string;
     "gravatar_id": string;
@@ -31,7 +31,7 @@ export type Owner = {
     "site_admin": boolean;
 };
 export type Repository = {
-    "id": I64;
+    "id": U64;
     "node_id": string;
     "name": string;
     "full_name": string;
