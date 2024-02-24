@@ -10,7 +10,6 @@ use typescript_type_def::TypeDef;
 pub struct Input {
     pub domain: String,
     pub show_participating_only: bool,
-    pub handle: String,
     pub token: String,
 }
 

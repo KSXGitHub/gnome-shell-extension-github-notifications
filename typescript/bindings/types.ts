@@ -5,7 +5,6 @@
 export type Input = {
     "domain": string;
     "show_participating_only": boolean;
-    "handle": string;
     "token": string;
 };
 export type U16 = number;
