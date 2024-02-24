@@ -2,13 +2,24 @@
 
 // sane-fmt-ignore-file
 
+export type F64 = number;
+export type U64 = number;
+export type Duration = (({
+    "unit": "s";
+} & F64) | ({
+    "unit": "ms";
+} & U64) | ({
+    "unit": "μs";
+} & U64) | ({
+    "unit": "ns";
+} & U64));
 export type Input = {
     "domain": string;
     "show_participating_only": boolean;
     "token": string;
+    "timeout"?: Duration;
 };
 export type U16 = number;
-export type U64 = number;
 export type Owner = {
     "login": string;
     "id": U64;
