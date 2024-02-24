@@ -3,6 +3,7 @@ use reqwest::{
     header::{ACCEPT, USER_AGENT},
 };
 use serde::Deserialize;
+use std::time::Duration;
 use typescript_type_def::TypeDef;
 
 #[derive(Debug, Deserialize, TypeDef)]
@@ -32,6 +33,7 @@ impl Input {
         let url = self.to_url();
         Client::new()
             .get(url)
+            .timeout(Duration::from_secs(5))
             .bearer_auth(token)
             .header(
                 USER_AGENT,
