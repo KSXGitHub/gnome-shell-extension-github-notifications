@@ -8,6 +8,7 @@ export type Input = {
     "handle": string;
     "token": string;
 };
+export type U16 = number;
 export type I64 = number;
 export type Owner = {
     "login": string;
@@ -97,7 +98,7 @@ export type Item = {
     "subscription_url": string;
 };
 export type SuccessValue = {
-    "status_code": I64;
+    "status_code": U16;
     "response": (Item)[];
     "last_modified"?: string;
     "poll_interval"?: string;
@@ -106,8 +107,8 @@ export type JSONValue = (null | boolean | number | string | (JSONValue)[] | {
     [key:string]:JSONValue;
 });
 export type FailureValue = {
-    "status_code": I64;
-    "response": JSONValue;
+    "status_code": U16;
+    "response"?: JSONValue;
 };
 export type Output = (({
     "type": "Success";

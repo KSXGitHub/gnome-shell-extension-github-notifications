@@ -33,7 +33,7 @@ impl TryFrom<Response> for Output {
                 .ok()
                 .and_then(|text| serde_json::from_str::<serde_json::Value>(&text).ok());
             let value = FailureValue {
-                status_code: status_code as i64, // TODO: change this
+                status_code,
                 response,
             };
             return value.pipe(Output::Failure).pipe(Ok);
@@ -53,7 +53,7 @@ impl TryFrom<Response> for Output {
             .pipe_as_ref(serde_json::from_str::<Vec<Item>>)
             .map_err(ParseResponseError::ParseJson)?;
         let value = SuccessValue {
-            status_code: status_code as i64, // TODO: change this
+            status_code,
             last_modified,
             poll_interval,
             response,
@@ -64,7 +64,7 @@ impl TryFrom<Response> for Output {
 
 #[derive(Debug, Serialize, TypeDef)]
 pub struct SuccessValue {
-    pub status_code: i64,
+    pub status_code: u16,
     pub response: Vec<Item>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_modified: Option<String>,
@@ -74,7 +74,7 @@ pub struct SuccessValue {
 
 #[derive(Debug, Serialize, TypeDef)]
 pub struct FailureValue {
-    pub status_code: i64,
+    pub status_code: u16,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub response: Option<serde_json::Value>,
 }
