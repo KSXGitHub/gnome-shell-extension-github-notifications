@@ -1,4 +1,7 @@
-use serde::Serialize;
+use derive_more::Display;
+use pipe_trait::Pipe;
+use reqwest::{blocking::Response, header::LAST_MODIFIED, StatusCode};
+use serde::{Deserialize, Serialize};
 use typescript_type_def::TypeDef;
 
 #[derive(Debug, Serialize, TypeDef)]
@@ -6,6 +9,57 @@ use typescript_type_def::TypeDef;
 pub enum Output {
     Success(SuccessValue),
     Failure(FailureValue),
+}
+
+#[derive(Debug, Display)]
+pub enum ParseResponseError {
+    #[display("Failed to get response text: {_0}")]
+    GetResponseText(reqwest::Error),
+    #[display("Cannot parse response text as JSON: {_0}")]
+    ParseJson(serde_json::Error),
+}
+
+impl TryFrom<Response> for Output {
+    type Error = ParseResponseError;
+
+    fn try_from(response: Response) -> Result<Self, Self::Error> {
+        let status = response.status();
+        let status_code = status.as_u16();
+        let headers = response.headers();
+
+        if !status.is_success() && status != StatusCode::NOT_MODIFIED {
+            let response = response
+                .text()
+                .ok()
+                .and_then(|text| serde_json::from_str::<serde_json::Value>(&text).ok());
+            let value = FailureValue {
+                status_code: status_code as i64, // TODO: change this
+                response,
+            };
+            return value.pipe(Output::Failure).pipe(Ok);
+        }
+
+        let last_modified = headers
+            .get(LAST_MODIFIED)
+            .and_then(|x| x.to_str().ok())
+            .map(|x| x.to_string());
+        let poll_interval = headers
+            .get("X-Poll-Interval")
+            .and_then(|x| x.to_str().ok())
+            .map(|x| x.to_string());
+        let response = response
+            .text()
+            .map_err(ParseResponseError::GetResponseText)?
+            .pipe_as_ref(serde_json::from_str::<Vec<Item>>)
+            .map_err(ParseResponseError::ParseJson)?;
+        let value = SuccessValue {
+            status_code: status_code as i64, // TODO: change this
+            last_modified,
+            poll_interval,
+            response,
+        };
+        value.pipe(Output::Success).pipe(Ok)
+    }
 }
 
 #[derive(Debug, Serialize, TypeDef)]
@@ -21,10 +75,11 @@ pub struct SuccessValue {
 #[derive(Debug, Serialize, TypeDef)]
 pub struct FailureValue {
     pub status_code: i64,
-    pub response: serde_json::Value,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub response: Option<serde_json::Value>,
 }
 
-#[derive(Debug, Serialize, TypeDef)]
+#[derive(Debug, Deserialize, Serialize, TypeDef)]
 pub struct Item {
     pub id: String,
     pub repository: Repository,
@@ -37,7 +92,7 @@ pub struct Item {
     pub subscription_url: String,
 }
 
-#[derive(Debug, Serialize, TypeDef)]
+#[derive(Debug, Deserialize, Serialize, TypeDef)]
 pub struct Repository {
     pub id: i64,
     pub node_id: String,
@@ -89,7 +144,7 @@ pub struct Repository {
     pub hooks_url: String,
 }
 
-#[derive(Debug, Serialize, TypeDef)]
+#[derive(Debug, Deserialize, Serialize, TypeDef)]
 pub struct Owner {
     pub login: String,
     pub id: i64,
@@ -111,7 +166,7 @@ pub struct Owner {
     pub site_admin: bool,
 }
 
-#[derive(Debug, Serialize, TypeDef)]
+#[derive(Debug, Deserialize, Serialize, TypeDef)]
 pub struct Subject {
     pub title: String,
     pub url: String,
