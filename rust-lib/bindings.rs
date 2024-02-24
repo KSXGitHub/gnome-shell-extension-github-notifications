@@ -11,8 +11,8 @@ where
     write_definition_file::<_, (Input, Output)>(
         target,
         DefinitionFileOptions {
+            header: None,
             root_namespace: None,
-            ..Default::default()
         },
     )
     .expect("write TypeScript definitions to output");
