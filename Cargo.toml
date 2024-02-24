@@ -3,13 +3,22 @@ name = "gnome-shell-extension-github-notifications"
 version = "0.0.0"
 edition = "2021"
 
+[lib]
+name = "gnome_shell_extension_github_notifications"
+path = "src/lib.rs"
+
 [[bin]]
 name = "gnome-shell-extension-github-notifications"
 path = "src/main.rs"
 
+[[bin]]
+name = "generate-typescript-definitions"
+path = "src/bindings.rs"
+
 [dependencies]
 clap = { version = "4.5.1", features = ["derive"] }
+pipe-trait = "0.4.0"
 reqwest = "0.11.24"
 serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
-ts-rs = "7.1.1"
+typescript-type-def = { version = "0.5.11", features = ["json_value"] }

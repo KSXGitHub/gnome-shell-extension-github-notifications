@@ -1,6 +1,7 @@
 uuid := `jq -r .uuid < src/metadata.json`
 extension-dir := "~/.local/share/gnome-shell/extensions/"
 install-path := extension-dir + uuid
+helper-command := "gnome-shell-extension-github-notifications"
 
 # List all available recipes
 _default:
@@ -10,17 +11,21 @@ _default:
 deps:
   pnpm install --frozen-lockfile
 
+# Generate TypeScript definitions to interact with the helper command
+bindings:
+  cargo run --bin=generate-typescript-definitions --release --locked -- src/bindings/types.ts
+
 # Compile TypeScript code to JavaScript
-tsc: deps
+tsc: deps bindings
   pnpm exec tsc
 
 # Check and compile Rust in release mode
 rust:
   cargo clippy --release --locked -- -D warnings
   cargo fmt --check
-  cargo build --release --locked
+  cargo build --bin={{helper-command}} --release --locked
   mkdir -pv dist/bin
-  cp -v target/release/gnome-shell-extension-github-notifications dist/bin
+  cp -v target/release/{{helper-command}} dist/bin
 
 # Copy non-TypeScript files from src to dist
 assets:
@@ -36,7 +41,7 @@ schemas:
   glib-compile-schemas dist/schemas
 
 # Build the extension in dist
-build: assets schemas tsc rust
+build: assets schemas rust tsc
 
 # Delete the build result
 clean:
