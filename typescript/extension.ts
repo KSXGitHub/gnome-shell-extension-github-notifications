@@ -3,7 +3,7 @@ import GLib from 'gi://GLib'
 import Gdk from 'gi://Gdk'
 import Gio from 'gi://Gio'
 import Gtk from 'gi://Gtk'
-import Soup from 'gi://Soup?version=2.4'
+import Soup from 'gi://Soup'
 import St from 'gi://St'
 
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
