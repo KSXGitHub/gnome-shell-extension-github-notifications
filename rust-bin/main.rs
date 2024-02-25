@@ -17,5 +17,6 @@ fn main() -> ExitCode {
         eprintln!("ERROR: {error}");
         return ExitCode::FAILURE;
     }
+
     ExitCode::SUCCESS
 }
