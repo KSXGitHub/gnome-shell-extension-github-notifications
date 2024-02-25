@@ -11,6 +11,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import { SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
 
 import { info, error } from './log.js'
+import type { Input, Item, Output } from './bindings/types.js'
 
 class GithubNotifications {
   private token: string = ''
@@ -192,64 +193,79 @@ class GithubNotifications {
     })
   }
 
-  private fetchNotifications(): void {
-    let message = new Soup.Message({ method: 'GET', uri: this.authUri })
-    if (this.lastModified) {
-      // github's API is currently broken: marking a notification as read won't modify the "last-modified" header
-      // so this is useless for now
-      //message.request_headers.append('If-Modified-Since', this.lastModified);
+  private async fetchNotifications(): Promise<void> {
+    const inputObject: Input = {
+      domain: this.domain,
+      token: this.token,
+      show_participating_only: this.showParticipatingOnly,
+      timeout: {
+        amount: 5,
+        unit: 's',
+      },
+    }
+    const inputText = JSON.stringify(inputObject)
+
+    const program = GLib.build_filenamev([this.extension.path, 'bin', 'gnome-shell-extension-github-notifications'])
+    const flags = Gio.SubprocessFlags.STDIN_PIPE | Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE
+    const process = Gio.Subprocess.new([program], flags)
+    const cancellable = new Gio.Cancellable()
+
+    const [stdout, stderr] = await process.communicate_utf8_async(inputText, cancellable)
+
+    if (!process.get_successful()) {
+      error('The helper process fails')
+      error(stderr!)
+      this.planFetch(this.interval(), true)
+      return
     }
 
-    this.httpSession!.queue_message(message, (_, response) => {
-      try {
-        if (response.status_code == 200 || response.status_code == 304) {
-          if (response.response_headers.get('Last-Modified')) {
-            this.lastModified = response.response_headers.get('Last-Modified')
-          }
-          if (response.response_headers.get('X-Poll-Interval')) {
-            this.githubInterval = Number(response.response_headers.get('X-Poll-Interval') ?? 0)
-          }
-          this.planFetch(this.interval(), false)
-          if (response.status_code == 200) {
-            // let data = JSON.parse(response.response_body.data)
-            // this.updateNotifications(data)
-            this.updateNotifications(response)
-          }
-          return
-        }
-        if (response.status_code == 401) {
-          error('Unauthorized. Check your github handle and token in the settings')
-          this.planFetch(this.interval(), true)
-          this.label.set_text('!')
-          return
-        }
-        if (!response.response_body.data && response.status_code > 400) {
-          error('HTTP error:' + response.status_code)
-          this.planFetch(this.interval(), true)
-          return
-        }
-        // if we reach this point, none of the cases above have been triggered
-        // which likely means there was an error locally or on the network
-        // therefore we should try again in a while
-        error('HTTP error:' + response.status_code)
-        error('response error: ' + JSON.stringify(response))
-        this.planFetch(this.interval(), true)
-        this.label.set_text('!')
-        return
-      } catch (e) {
-        error('HTTP exception:' + e)
-        return
-      }
-    })
+    if (!stdout) {
+      this.planFetch(this.interval(), true)
+      throw new TypeError('stdout is null')
+    }
+
+    const output: Output = JSON.parse(stdout)
+
+    if (output.type == 'Unauthorized') {
+      error('Unauthorized. Check your token in the settings')
+      this.label.set_text('!')
+      this.planFetch(this.interval(), true)
+      return
+    }
+
+    if (output.type == 'OtherFailure') {
+      const { response, status_code } = output
+      error('HTTP error: ' + status_code)
+      error('response error: ' + JSON.stringify(response))
+      this.planFetch(this.interval(), true)
+      return
+    }
+
+    if (output.type != 'Success') {
+      const _: never = output // type guard
+      throw new Error(`Variant not handled: ${(output as Output).type}`)
+    }
+
+    const { last_modified, poll_interval, status_code, response } = output
+
+    if (last_modified) {
+      this.lastModified = last_modified
+    }
+
+    if (poll_interval) {
+      this.githubInterval = Number(poll_interval)
+    }
+
+    this.planFetch(this.interval(), false)
+
+    if (status_code == 200) {
+      this.updateNotifications(response)
+    }
   }
 
-  private updateNotifications(response: Soup.Message): void {
-    const data = JSON.parse(response.response_body.data)
-
+  private updateNotifications(data: Item[]): void {
     if (!Array.isArray(data)) {
-      for (const line of response.response_body.data.split('\n')) {
-        info('[response] ' + line)
-      }
+      info('[response] ' + JSON.stringify(data))
       error('GitHub API did not return an array')
       return
     }
