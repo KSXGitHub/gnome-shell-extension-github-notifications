@@ -21,7 +21,6 @@ class GithubNotifications {
   private refreshInterval: number = 60
   private githubInterval: number = 60
   private timeout: number | null = null
-  private httpSession: Soup.Session | null = null
   private notifications: unknown[] = []
   private lastModified: unknown = null
   private retryAttempts: number = 0
