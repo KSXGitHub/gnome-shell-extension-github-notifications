@@ -12,7 +12,7 @@ export default class GitHubNotificationsPreferences extends ExtensionPreferences
     this.#prefsWidget = buildPrefsWidget(this.getSettings())
   }
 
-  public getPreferencesWidget (): Gtk.Widget {
+  public getPreferencesWidget(): Gtk.Widget {
     return this.#prefsWidget
   }
 }

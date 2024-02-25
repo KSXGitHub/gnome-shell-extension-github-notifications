@@ -9,8 +9,8 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import { SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
 
-import { info, error } from './log.js'
 import type { Input, Item, Output } from './bindings/types.js'
+import { info, error } from './log.js'
 
 class GithubNotifications {
   private token: string = ''
