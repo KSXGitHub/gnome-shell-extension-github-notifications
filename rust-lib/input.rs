@@ -7,6 +7,7 @@ use std::time::Duration as StdDuration;
 use typescript_type_def::TypeDef;
 
 #[derive(Debug, Deserialize, TypeDef)]
+#[serde(deny_unknown_fields)]
 pub struct Input {
     pub domain: String,
     pub show_participating_only: bool,
