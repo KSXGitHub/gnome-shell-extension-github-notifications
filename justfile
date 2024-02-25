@@ -34,6 +34,7 @@ assets:
   cp -v assets/metadata.json dist
   cp -v assets/stylesheet.css dist
   cp -v assets/github.svg dist
+  cp -v LICENSE dist
 
 # Compile schemas
 schemas:
