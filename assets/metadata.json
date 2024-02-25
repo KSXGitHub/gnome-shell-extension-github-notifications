@@ -3,5 +3,6 @@
   "settings-schema": "org.gnome.shell.extensions.github.notifications",
 	"uuid": "github.notifications@KSXGitHub",
 	"name": "Github Notifications",
+  "url": "https://github.com/KSXGitHub/gnome-shell-extension-github-notifications.git",
 	"shell-version": ["45"]
 }
