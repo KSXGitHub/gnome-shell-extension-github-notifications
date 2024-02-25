@@ -285,15 +285,15 @@ class GithubNotifications {
 }
 
 export default class GithubNotificationsExtension extends Extension {
-  private _githubNotification: GithubNotifications
+  #core: GithubNotifications
 
   public enable(): void {
-    this._githubNotification = new GithubNotifications(this)
-    this._githubNotification.start()
+    this.#core = new GithubNotifications(this)
+    this.#core.start()
   }
 
   public disable(): void {
-    this._githubNotification.stop()
-    this._githubNotification = null as any
+    this.#core.stop()
+    this.#core = null as any
   }
 }
