@@ -139,7 +139,6 @@ class GithubNotifications {
         url = `https://${this.domain}/notifications/participating`
       }
 
-      // Gtk.show_uri(null, url, Gtk.get_current_event_time())
       Gtk.show_uri(null, url, Gdk.CURRENT_TIME)
     } catch (e) {
       error('Cannot open uri ' + e)
