@@ -35,9 +35,6 @@ class GithubNotifications {
   private box: St.BoxLayout
   private domain: string
   private label: St.Label
-  private authUri: Soup.URI
-  private authManager: Soup.AuthManager
-  private auth: Soup.AuthBasic
 
   public constructor(extension: GithubNotificationsExtension) {
     this.extension = extension
@@ -55,10 +52,8 @@ class GithubNotifications {
   private lazyInit(): void {
     this.hasLazilyInit = true
     this.reloadSettings()
-    this.initHttp()
     this.settings!.connect('changed', () => {
       this.reloadSettings()
-      this.initHttp()
       this.stopLoop()
       this.planFetch(5, false)
     })
@@ -154,29 +149,6 @@ class GithubNotifications {
       Gtk.show_uri(null, url, Gdk.CURRENT_TIME)
     } catch (e) {
       error('Cannot open uri ' + e)
-    }
-  }
-
-  private initHttp(): void {
-    let url = `https://api.${this.domain}/notifications`
-    if (this.showParticipatingOnly) {
-      url = `https://api.${this.domain}/notifications?participating=1`
-    }
-    this.authUri = new Soup.URI(url)
-    this.authUri.set_user(this.handle)
-    this.authUri.set_password(this.token)
-
-    if (this.httpSession) {
-      this.httpSession.abort()
-    } else {
-      this.httpSession = new Soup.Session()
-      this.httpSession.user_agent = 'gnome-shell-extension github notification via libsoup'
-
-      this.authManager = new Soup.AuthManager()
-      this.auth = new Soup.AuthBasic({ host: `api.${this.domain}`, realm: 'Github Api' })
-
-      this.authManager.use_auth(this.authUri, this.auth)
-      this.httpSession.add_feature(this.authManager)
     }
   }
 
