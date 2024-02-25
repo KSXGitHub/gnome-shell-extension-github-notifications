@@ -29,6 +29,12 @@ just build
 just install
 ```
 
+## FAQs
+
+### Why does this extension require a binary?
+
+I don't want to deal with `libsoup` API, so I write a Rust program to interact with GitHub server.
+
 ## Credits
 
 This is a fork of https://github.com/alexduf/gnome-github-notifications that supports (only) GNOME 45.
