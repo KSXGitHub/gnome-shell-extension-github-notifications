@@ -64,7 +64,7 @@ class GithubNotifications {
     if (!this.hasLazilyInit) {
       this.lazyInit()
     }
-    this.fetchNotifications()
+    this.fetchNotifications().catch(err => error('[fetch] ' + err))
     Main.panel._rightBox.insert_child_at_index(this.box, 0) // TODO: patch type definition
   }
 
@@ -160,7 +160,7 @@ class GithubNotifications {
     }
     this.stopLoop()
     this.timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, delay, () => {
-      this.fetchNotifications()
+      this.fetchNotifications().catch((err: unknown) => error('[fetch] ' + error))
       return false
     })
   }
