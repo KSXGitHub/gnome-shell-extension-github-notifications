@@ -47,7 +47,7 @@ impl Input {
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, TypeDef)]
-#[serde(tag = "unit")]
+#[serde(tag = "unit", content = "amount")]
 pub enum Duration {
     #[serde(rename = "s")]
     Sec(f64),
