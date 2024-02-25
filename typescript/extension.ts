@@ -15,7 +15,6 @@ import type { Input, Item, Output } from './bindings/types.js'
 
 class GithubNotifications {
   private token: string = ''
-  private handle: string = ''
   private hideWidget: boolean = false
   private hideCount: boolean = false
   private refreshInterval: number = 60
@@ -75,7 +74,6 @@ class GithubNotifications {
   private reloadSettings(): void {
     this.domain = this.settings.get_string('domain')!
     this.token = this.settings.get_string('token')!
-    this.handle = this.settings.get_string('handle')!
     this.hideWidget = this.settings.get_boolean('hide-widget')
     this.hideCount = this.settings.get_boolean('hide-notification-count')
     this.refreshInterval = this.settings.get_int('refresh-interval')

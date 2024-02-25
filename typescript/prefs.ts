@@ -113,7 +113,6 @@ function buildPrefsWidget(settings: Gio.Settings): Gtk.Box {
   const innerWidgets = [
     makeLabeledEntryOptionBox({ label: 'Github Hostname', key: 'domain', settings }),
     makeLabeledEntryOptionBox({ label: 'Github Token', key: 'token', settings }),
-    makeLabeledEntryOptionBox({ label: 'Github Handle', key: 'handle', settings }),
     makeLabeledSwitchOptionBox({ label: 'Show notifications alert', key: 'show-alert', settings }),
     makeLabeledSpinButtonOptionBox({
       label: 'Refresh interval (in seconds)*',

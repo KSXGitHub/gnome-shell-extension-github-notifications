@@ -1,10 +1,6 @@
 <schemalist gettext-domain="gnome-shell-extension-github-notifications">
 
   <schema id="org.gnome.shell.extensions.github.notifications" path="/org/gnome/shell/extensions/github-notifications/">
-    <key name="handle" type="s">
-      <default>''</default>
-      <summary>Your github handle</summary>
-    </key>
     <key name="domain" type="s">
       <default>'github.com'</default>
       <summary>Your github domain</summary>
