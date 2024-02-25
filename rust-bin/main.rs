@@ -1,13 +1,13 @@
-use gnome_shell_extension_github_notifications::app::{App, ParseError};
+use gnome_shell_extension_github_notifications::app::{App, ParseResult};
 use std::{env::args, process::ExitCode};
 
 fn main() -> ExitCode {
     let args: Vec<_> = args().collect();
 
     let app = match App::parse(&args) {
-        Ok(app) => app,
-        Err(ParseError::EarlyExit(code)) => return code,
-        Err(error) => {
+        ParseResult::Continue(app) => app,
+        ParseResult::Exit(code) => return code,
+        ParseResult::Failure(error) => {
             eprintln!("ERROR: {error}");
             return ExitCode::FAILURE;
         }

@@ -15,18 +15,23 @@ pub enum ParseError<'a> {
     TooManyArguments,
     #[display("Unknown command or flag: {_0}")]
     UnknownArgument(&'a str),
-    #[display("early exit")]
-    EarlyExit(ExitCode),
+}
+
+#[derive(Debug)]
+pub enum ParseResult<'a> {
+    Continue(App),
+    Exit(ExitCode),
+    Failure(ParseError<'a>),
 }
 
 impl App {
-    pub fn parse<'a, Argument, ArgumentList>(argv: &'a ArgumentList) -> Result<Self, ParseError<'a>>
+    pub fn parse<'a, Argument, ArgumentList>(argv: &'a ArgumentList) -> ParseResult<'a>
     where
         Argument: AsRef<str> + 'a,
         ArgumentList: AsRef<[Argument]> + 'a,
     {
         if argv.as_ref().len() > 2 {
-            return Err(ParseError::TooManyArguments);
+            return ParseResult::Failure(ParseError::TooManyArguments);
         }
 
         match argv.as_ref().get(1).map(AsRef::as_ref) {
@@ -37,10 +42,12 @@ impl App {
                 println!();
                 println!("FLAGS:");
                 println!("  --help, -h: See this message");
-                ExitCode::SUCCESS.pipe(ParseError::EarlyExit).pipe(Err)
+                ParseResult::Exit(ExitCode::SUCCESS)
             }
-            Some(first_arg) => first_arg.pipe(ParseError::UnknownArgument).pipe(Err),
-            None => Ok(App),
+            Some(first_arg) => first_arg
+                .pipe(ParseError::UnknownArgument)
+                .pipe(ParseResult::Failure),
+            None => ParseResult::Continue(App),
         }
     }
 }
