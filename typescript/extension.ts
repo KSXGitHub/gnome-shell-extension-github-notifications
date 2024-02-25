@@ -19,7 +19,7 @@ class GithubNotifications {
   private refreshInterval: number = 60
   private githubInterval: number = 60
   private timeout: number | null = null
-  private notifications: unknown[] = []
+  private notifications: Item[] = []
   private lastModified: unknown = null
   private retryAttempts: number = 0
   private retryIntervals: number[] = [60, 120, 240, 480, 960, 1920, 3600]
