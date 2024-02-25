@@ -6,6 +6,7 @@ Integrate github's notifications within the gnome desktop environment.
 
 **Required tools:**
 * [`just`](https://just.systems/)
+* [`cargo`](https://www.rust-lang.org/)
 * [`node`](https://nodejs.org/)
 * [`pnpm`](https://pnpm.io/)
 * [`jq`](https://jqlang.github.io/jq/)
