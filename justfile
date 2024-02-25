@@ -26,6 +26,7 @@ rust:
   cargo build --bin={{helper-command}} --release --locked
   mkdir -pv dist/bin
   cp -v target/release/{{helper-command}} dist/bin
+  env TARGET_FILE=dist/bin/{{helper-command}} ./upx.bash
 
 # Copy non-TypeScript files from assets to dist
 assets:

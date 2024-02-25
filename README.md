@@ -10,6 +10,7 @@ Integrate github's notifications within the gnome desktop environment.
 * [`node`](https://nodejs.org/)
 * [`pnpm`](https://pnpm.io/)
 * [`jq`](https://jqlang.github.io/jq/)
+* [`upx`](https://upx.github.io/) (optional)
 
 ### List all tasks
 
