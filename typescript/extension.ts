@@ -92,7 +92,6 @@ class GithubNotifications {
 
   private stopLoop(): void {
     if (this.timeout) {
-      // Mainloop.source_remove(this.timeout);
       GLib.source_remove(this.timeout)
       this.timeout = null
     }
