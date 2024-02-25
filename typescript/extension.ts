@@ -116,7 +116,6 @@ class GithubNotifications {
     let icon = new St.Icon({
       style_class: 'system-status-icon',
     })
-    // icon.gicon = Gio.icon_new_for_string(`${this.extension.path}/github.svg`)
     icon.gicon = Gio.icon_new_for_string(GLib.build_filenamev([this.extension.path, 'github.svg']))
 
     this.box.add_actor(icon)
