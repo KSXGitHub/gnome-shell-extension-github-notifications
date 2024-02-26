@@ -19,6 +19,16 @@ bindings:
 tsc: deps bindings
   pnpm exec tsc
 
+upx:
+  #! /bin/bash
+  set -o errexit -o pipefail -o nounset
+
+  if command -v upx; then
+    exec upx --lzma --best dist/bin/{{helper-command}}
+  else
+    echo 'Cannot find upx. Skip.' >&2
+  fi
+
 # Check and compile Rust in release mode
 rust:
   cargo clippy --release --locked -- -D warnings
@@ -26,7 +36,7 @@ rust:
   cargo build --bin={{helper-command}} --release --locked
   mkdir -pv dist/bin
   cp -v target/release/{{helper-command}} dist/bin
-  env TARGET_FILE=dist/bin/{{helper-command}} ./upx.bash
+  just upx
 
 # Copy non-TypeScript files from assets to dist
 assets:
