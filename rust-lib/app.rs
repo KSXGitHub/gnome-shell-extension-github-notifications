@@ -4,7 +4,10 @@ use crate::{
 };
 use derive_more::Display;
 use pipe_trait::Pipe;
-use std::{io::stdin, process::ExitCode};
+use std::{
+    io::{stdin, stdout},
+    process::ExitCode,
+};
 
 #[derive(Debug)]
 pub struct App;
@@ -74,12 +77,8 @@ impl App {
             .send()
             .map_err(RunError::Request)?
             .pipe(Output::try_from)
-            .map_err(RunError::ParseResponse)?
-            .pipe_ref(serde_json::to_string)
-            .map_err(RunError::SerializeResponse)?;
+            .map_err(RunError::ParseResponse)?;
 
-        println!("{output}");
-
-        Ok(())
+        serde_json::to_writer(stdout(), &output).map_err(RunError::SerializeResponse)
     }
 }
