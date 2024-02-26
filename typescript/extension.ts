@@ -276,7 +276,6 @@ class GithubNotifications {
       notification.update(title, message, { clear: true })
     }
 
-    // this._source.notify(notification)
     this._source.pushNotification(notification)
   }
 }
