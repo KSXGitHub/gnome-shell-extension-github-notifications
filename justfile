@@ -19,6 +19,7 @@ bindings:
 tsc: deps bindings
   pnpm exec tsc
 
+# Compress the helper binary
 upx:
   #! /bin/bash
   set -o errexit -o pipefail -o nounset
