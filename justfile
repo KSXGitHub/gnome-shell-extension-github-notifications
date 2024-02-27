@@ -2,14 +2,25 @@ uuid := `jq -r .uuid < assets/metadata.json`
 extension-dir := "~/.local/share/gnome-shell/extensions/"
 install-path := extension-dir + uuid
 helper-command := "gnome-shell-extension-github-notifications"
+corepack-dir := "./corepack/"
+pnpm := corepack-dir + "pnpm"
 
 # List all available recipes
 _default:
   @just --list
 
+# Install package manager as specified by package.json#packageManager
+corepack:
+  mkdir -pv {{corepack-dir}}
+  corepack enable --install-directory {{corepack-dir}}
+
+# Run pnpm that was installed by `just corepack`
+pnpm *args:
+  PATH={{corepack-dir}}:"$PATH" {{pnpm}} {{args}}
+
 # Install necessary npm dependencies
-deps:
-  pnpm install --frozen-lockfile
+deps: corepack
+  just pnpm install --frozen-lockfile
 
 # Generate TypeScript definitions to interact with the helper command
 bindings:
@@ -17,7 +28,7 @@ bindings:
 
 # Compile TypeScript code to JavaScript
 tsc: deps bindings
-  pnpm exec tsc
+  just pnpm exec tsc
 
 # Compress the helper binary
 upx:
