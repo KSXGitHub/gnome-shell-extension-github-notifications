@@ -27,7 +27,7 @@ bindings:
   cargo run --bin=generate-typescript-definitions --release --locked -- typescript/bindings/types.ts
 
 # Compile TypeScript code to JavaScript
-tsc: deps bindings
+tsc: corepack deps bindings
   just pnpm exec tsc
 
 # Compress the helper binary
