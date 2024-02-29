@@ -5,4 +5,3 @@ node_modules
 *.tsbuildinfo
 /target
 /bindings
-/corepack
