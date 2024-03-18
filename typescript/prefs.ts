@@ -42,10 +42,13 @@ function makeLabeledOptionBox(labelText: string): Gtk.Box {
   return box
 }
 
-function bindSettingToGtkWidget(options: {
+function bindSettingToGtkWidget<
+  Widget extends Gtk.Widget,
+  Property extends string & keyof Widget,
+>(options: {
   readonly key: string
-  readonly widget: Gtk.Widget
-  readonly property: string
+  readonly widget: Widget
+  readonly property: Property
   readonly settings: Gio.Settings
 }): void {
   const { key, widget, property, settings } = options
