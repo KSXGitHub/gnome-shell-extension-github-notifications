@@ -7,7 +7,7 @@ import St from 'gi://St'
 
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
 import * as Main from 'resource:///org/gnome/shell/ui/main.js'
-import { SystemNotificationSource, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
+import { Source, Notification } from 'resource:///org/gnome/shell/ui/messageTray.js'
 
 import type { Input, Item, Output } from './bindings/types.js'
 import { info, error } from './log.js'
@@ -26,7 +26,7 @@ class GithubNotifications {
   private hasLazilyInit: boolean = false
   private showAlertNotification: boolean = false
   private showParticipatingOnly: boolean = false
-  private _source: SystemNotificationSource | null = null
+  private _source: Source | null = null
   private extension: GithubNotificationsExtension
   private settings: Gio.Settings
   private box: St.BoxLayout
@@ -118,8 +118,8 @@ class GithubNotifications {
     })
     icon.gicon = Gio.icon_new_for_string(GLib.build_filenamev([this.extension.path, 'github.svg']))
 
-    this.box.add_actor(icon)
-    this.box.add_actor(this.label)
+    this.box.add_child(icon)
+    this.box.add_child(this.label)
 
     this.box.connect('button-press-event', (_, event) => {
       let button = event.get_button()
@@ -175,57 +175,63 @@ class GithubNotifications {
     const process = Gio.Subprocess.new([program], flags)
     const cancellable = new Gio.Cancellable()
 
-    const [stdout, stderr] = await process.communicate_utf8_async(inputText, cancellable)
+    process.communicate_utf8_async(inputText, cancellable, (proc, res) => {
+      if (!proc) {
+        error('The helper process is null')
+        this.planFetch(this.interval(), true)
+        return
+      }
+      const [_, stdout, stderr] = proc.communicate_utf8_finish(res);
+      if (!process.get_successful()) {
+        error('The helper process fails')
+        error(stderr!)
+        this.planFetch(this.interval(), true)
+        return
+      }
 
-    if (!process.get_successful()) {
-      error('The helper process fails')
-      error(stderr!)
-      this.planFetch(this.interval(), true)
-      return
-    }
+      if (!stdout) {
+        this.planFetch(this.interval(), true)
+        throw new TypeError('stdout is null')
+      }
 
-    if (!stdout) {
-      this.planFetch(this.interval(), true)
-      throw new TypeError('stdout is null')
-    }
+      const output: Output = JSON.parse(stdout)
 
-    const output: Output = JSON.parse(stdout)
+      if (output.type == 'Unauthorized') {
+        error('Unauthorized. Check your token in the settings')
+        this.label.set_text('!')
+        this.planFetch(this.interval(), true)
+        return
+      }
 
-    if (output.type == 'Unauthorized') {
-      error('Unauthorized. Check your token in the settings')
-      this.label.set_text('!')
-      this.planFetch(this.interval(), true)
-      return
-    }
+      if (output.type == 'OtherFailure') {
+        const { response, status_code } = output
+        error('HTTP error: ' + status_code)
+        error('response error: ' + JSON.stringify(response))
+        this.planFetch(this.interval(), true)
+        return
+      }
 
-    if (output.type == 'OtherFailure') {
-      const { response, status_code } = output
-      error('HTTP error: ' + status_code)
-      error('response error: ' + JSON.stringify(response))
-      this.planFetch(this.interval(), true)
-      return
-    }
+      if (output.type != 'Success') {
+        const _: never = output // type guard
+        throw new Error(`Variant not handled: ${(output as Output).type}`)
+      }
 
-    if (output.type != 'Success') {
-      const _: never = output // type guard
-      throw new Error(`Variant not handled: ${(output as Output).type}`)
-    }
+      const { last_modified, poll_interval, status_code, response } = output
 
-    const { last_modified, poll_interval, status_code, response } = output
+      if (last_modified) {
+        this.lastModified = last_modified
+      }
 
-    if (last_modified) {
-      this.lastModified = last_modified
-    }
+      if (poll_interval) {
+        this.githubInterval = Number(poll_interval)
+      }
 
-    if (poll_interval) {
-      this.githubInterval = Number(poll_interval)
-    }
+      this.planFetch(this.interval(), false)
 
-    this.planFetch(this.interval(), false)
-
-    if (status_code == 200) {
-      this.updateNotifications(response)
-    }
+      if (status_code == 200) {
+        this.updateNotifications(response)
+      }
+    });
   }
 
   private updateNotifications(data: Item[]): void {
@@ -258,7 +264,7 @@ class GithubNotifications {
     let notification: Notification
 
     if (!this._source) {
-      this._source = new SystemNotificationSource('GitHub Notification', 'github')
+      this._source = new Source({ title: 'GitHub Notification', iconName: 'github' })
       this._source.connect('destroy', () => {
         this._source = null
       })
@@ -266,17 +272,17 @@ class GithubNotifications {
     }
 
     if (this._source.notifications.length == 0) {
-      notification = new Notification(this._source, title, message)
+      notification = new Notification({ source: this._source, title: title, body: message })
 
-      notification.setTransient(true)
-      notification.setResident(false)
+      notification.isTransient = true
+      notification.resident = false
       notification.connect('activated', this.showBrowserUri.bind(this)) // Open on click
     } else {
       notification = this._source.notifications[0]
-      notification.update(title, message, { clear: true })
+      notification.set({ title: title, body: message, clear: true })
     }
 
-    this._source.pushNotification(notification)
+    this._source.addNotification(notification)
   }
 }
 

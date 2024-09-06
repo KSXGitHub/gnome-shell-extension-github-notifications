@@ -4,5 +4,5 @@
 	"uuid": "github.notifications@KSXGitHub",
 	"name": "Github Notifications",
   "url": "https://github.com/KSXGitHub/gnome-shell-extension-github-notifications.git",
-	"shell-version": ["45"]
+	"shell-version": ["46"]
 }
