@@ -41,7 +41,7 @@ The choices was either to learn `libsoup3` without any prior knowledge and with 
 
 ## Credits
 
-This is a fork of https://github.com/alexduf/gnome-github-notifications that supports (only) GNOME 45.
+This is a fork of https://github.com/alexduf/gnome-github-notifications that supports (only) GNOME 46.
 
 ## License
 
