@@ -1,5 +1,5 @@
 diff --git a/dist/ui/main.d.ts b/dist/ui/main.d.ts
-index 40a06bf13912ca8e3e5d9db61dccea3278d951d6..aed149837d1c7ae66685cd00f959ce501f5ea09f 100644
+index 8287446cbedbdadf0ebe219d2747d7d1acc621ba..1e84a235d14364bbdc9e9a0d8144c6a13a324438 100644
 --- a/dist/ui/main.d.ts
 +++ b/dist/ui/main.d.ts
 @@ -52,7 +52,10 @@ export declare const componentManager: ComponentManager;
@@ -8,14 +8,14 @@ index 40a06bf13912ca8e3e5d9db61dccea3278d951d6..aed149837d1c7ae66685cd00f959ce50
  
 -export declare const panel: Panel;
 +export declare const panel: Panel & {
-+    _leftBox: St.BoxLayout
-+    _rightBox: St.BoxLayout
++  _leftBox: St.BoxLayout
++  _rightBox: St.BoxLayout
 +};
  
  export declare const overview: any;
  
 diff --git a/src/ui/main.d.ts b/src/ui/main.d.ts
-index 40a06bf13912ca8e3e5d9db61dccea3278d951d6..aed149837d1c7ae66685cd00f959ce501f5ea09f 100644
+index 8287446cbedbdadf0ebe219d2747d7d1acc621ba..1e84a235d14364bbdc9e9a0d8144c6a13a324438 100644
 --- a/src/ui/main.d.ts
 +++ b/src/ui/main.d.ts
 @@ -52,7 +52,10 @@ export declare const componentManager: ComponentManager;
@@ -24,8 +24,8 @@ index 40a06bf13912ca8e3e5d9db61dccea3278d951d6..aed149837d1c7ae66685cd00f959ce50
  
 -export declare const panel: Panel;
 +export declare const panel: Panel & {
-+    _leftBox: St.BoxLayout
-+    _rightBox: St.BoxLayout
++  _leftBox: St.BoxLayout
++  _rightBox: St.BoxLayout
 +};
  
  export declare const overview: any;

@@ -6,8 +6,8 @@
   "license": "GPL-2.0-only",
   "sideEffects": false,
   "dependencies": {
-    "@girs/gnome-shell": "=46.0.0",
-    "@girs/gobject-2.0": "=2.80.3-4.0.0-beta.6"
+    "@girs/gnome-shell": "=47.0.0",
+    "@girs/gobject-2.0": "=2.82.2-4.0.0-beta.19"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
@@ -20,7 +20,7 @@
   "engineStrict": true,
   "pnpm": {
     "patchedDependencies": {
-      "@girs/gnome-shell@46.0.0": "patches/@girs__gnome-shell@46.0.0.patch"
+      "@girs/gnome-shell@47.0.0": "patches/@girs__gnome-shell@47.0.0.patch"
     }
   }
 }
