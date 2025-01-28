@@ -14,8 +14,8 @@ dependencies:
     specifier: '=47.0.0'
     version: 47.0.0(patch_hash=5iuggwqacf4ojfiitxillyc26e)
   '@girs/gobject-2.0':
-    specifier: '=2.82.2-4.0.0-beta.19'
-    version: 2.82.2-4.0.0-beta.19
+    specifier: '=2.82.2-4.0.0-beta.17'
+    version: 2.82.2-4.0.0-beta.17
 
 devDependencies:
   typescript:
@@ -68,14 +68,6 @@ packages:
       '@girs/gjs': 4.0.0-beta.17
       '@girs/glib-2.0': 2.82.2-4.0.0-beta.17
       '@girs/gobject-2.0': 2.82.2-4.0.0-beta.17
-    dev: false
-
-  /@girs/cairo-1.0@1.0.0-4.0.0-beta.19:
-    resolution: {integrity: sha512-nBI5oveqH0N7czBC95ofJ4Un5KKqK6guANE6O0OxkwuF6B3YxVqdNmF8O8i2tk3GIxBzwxkC0bi0Wb6X4tLR8g==}
-    dependencies:
-      '@girs/gjs': 4.0.0-beta.19
-      '@girs/glib-2.0': 2.82.2-4.0.0-beta.19
-      '@girs/gobject-2.0': 2.82.2-4.0.0-beta.19
     dev: false
 
   /@girs/cally-15@15.0.0-4.0.0-beta.17:
@@ -244,15 +236,6 @@ packages:
       '@girs/gobject-2.0': 2.82.2-4.0.0-beta.17
     dev: false
 
-  /@girs/gio-2.0@2.82.2-4.0.0-beta.19:
-    resolution: {integrity: sha512-OM2E/mdNX3Z+X7mB8ZVFch4WbUqX1Y6hADiG9+LuGWsAOjPAVvDDUk5N4+34+BTPEfFHLGOdo8E7dI235jylCQ==}
-    dependencies:
-      '@girs/gjs': 4.0.0-beta.19
-      '@girs/glib-2.0': 2.82.2-4.0.0-beta.19
-      '@girs/gmodule-2.0': 2.0.0-4.0.0-beta.19
-      '@girs/gobject-2.0': 2.82.2-4.0.0-beta.19
-    dev: false
-
   /@girs/gjs@4.0.0-beta.17:
     resolution: {integrity: sha512-LuWArp6QGy+lLCbyU8VgjB610VESUu2SvL2PYO76amJE1TGCtqJqT3edZlAqQkDih+4Lt/LASvNqIkHYTgjsRw==}
     dependencies:
@@ -260,15 +243,6 @@ packages:
       '@girs/gio-2.0': 2.82.2-4.0.0-beta.17
       '@girs/glib-2.0': 2.82.2-4.0.0-beta.17
       '@girs/gobject-2.0': 2.82.2-4.0.0-beta.17
-    dev: false
-
-  /@girs/gjs@4.0.0-beta.19:
-    resolution: {integrity: sha512-tl+BjmMqqZH9xZcJZ2AwWI0sotGDc7qVPppAJNeFZFCgUDOFVWThZfkpZffZcQGNphn7wgU8HOvgZyrtVhrltw==}
-    dependencies:
-      '@girs/cairo-1.0': 1.0.0-4.0.0-beta.19
-      '@girs/gio-2.0': 2.82.2-4.0.0-beta.19
-      '@girs/glib-2.0': 2.82.2-4.0.0-beta.19
-      '@girs/gobject-2.0': 2.82.2-4.0.0-beta.19
     dev: false
 
   /@girs/gl-1.0@1.0.0-4.0.0-beta.17:
@@ -285,27 +259,12 @@ packages:
       '@girs/gobject-2.0': 2.82.2-4.0.0-beta.17
     dev: false
 
-  /@girs/glib-2.0@2.82.2-4.0.0-beta.19:
-    resolution: {integrity: sha512-mRUhcp7O65KQQkyrgiQpUzl1rY+TH4X+A98Kk67g3VjuA7Ei/lV4lcuZnW04HnXAGvQ3Qfkq877NmcDXRgb02g==}
-    dependencies:
-      '@girs/gjs': 4.0.0-beta.19
-      '@girs/gobject-2.0': 2.82.2-4.0.0-beta.19
-    dev: false
-
   /@girs/gmodule-2.0@2.0.0-4.0.0-beta.17:
     resolution: {integrity: sha512-qPqBTF3smZNAEMf4m1tBV+nOV0yiHbraKnDXSlnfMmyBQZOD6lsaubP5DR3TA7bLuOp+kE6A7z4V07FQ1KTX/A==}
     dependencies:
       '@girs/gjs': 4.0.0-beta.17
       '@girs/glib-2.0': 2.82.2-4.0.0-beta.17
       '@girs/gobject-2.0': 2.82.2-4.0.0-beta.17
-    dev: false
-
-  /@girs/gmodule-2.0@2.0.0-4.0.0-beta.19:
-    resolution: {integrity: sha512-whTYGLL63Hw1Tn9ZicpJRAMtkYiZwB3lrcln4ETFxyO1ckGTTZ5s17cWcrQjij27veVvjWcb5rmc93L5djeBpg==}
-    dependencies:
-      '@girs/gjs': 4.0.0-beta.19
-      '@girs/glib-2.0': 2.82.2-4.0.0-beta.19
-      '@girs/gobject-2.0': 2.82.2-4.0.0-beta.19
     dev: false
 
   /@girs/gnome-shell@47.0.0(patch_hash=5iuggwqacf4ojfiitxillyc26e):
@@ -384,13 +343,6 @@ packages:
     dependencies:
       '@girs/gjs': 4.0.0-beta.17
       '@girs/glib-2.0': 2.82.2-4.0.0-beta.17
-    dev: false
-
-  /@girs/gobject-2.0@2.82.2-4.0.0-beta.19:
-    resolution: {integrity: sha512-E1fCaIZvZ7K035Waa/vYOTqLKI47OSUX3wpMrD+DBlyfDLDCFvyXwaIrFsiKUVFJIxj1xxq7H2yCZvkYqkfklA==}
-    dependencies:
-      '@girs/gjs': 4.0.0-beta.19
-      '@girs/glib-2.0': 2.82.2-4.0.0-beta.19
     dev: false
 
   /@girs/graphene-1.0@1.0.0-4.0.0-beta.17:

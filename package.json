@@ -7,7 +7,7 @@
   "sideEffects": false,
   "dependencies": {
     "@girs/gnome-shell": "=47.0.0",
-    "@girs/gobject-2.0": "=2.82.2-4.0.0-beta.19"
+    "@girs/gobject-2.0": "=2.82.2-4.0.0-beta.17"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
