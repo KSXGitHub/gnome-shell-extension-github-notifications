@@ -1,5 +1,5 @@
 {
-	"description": "Integrate Github's notifications within the gnome desktop environment\nSource code is available here: https://github.com/alexduf/gnome-github-notifications",
+	"description": "Integrate Github's notifications within the gnome desktop environment\nSource code is available here: https://github.com/KSXGitHub/gnome-shell-extension-github-notifications",
   "settings-schema": "org.gnome.shell.extensions.github.notifications",
 	"uuid": "github.notifications@KSXGitHub",
 	"name": "Github Notifications",
