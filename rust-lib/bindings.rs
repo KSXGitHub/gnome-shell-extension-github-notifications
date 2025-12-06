@@ -1,16 +1,17 @@
 use crate::{input::Input, output::Output};
 use std::io::Write;
+use text_block_macros::text_block_fnl;
 use typescript_type_def::{write_definition_file, DefinitionFileOptions};
 
 pub fn generate_to<Target>(target: Target)
 where
     Target: Write,
 {
-    let header = concat!(
-        "// This file was generated, do not edit\n",
-        "\n",
-        "// sane-fmt-ignore-file\n",
-    );
+    let header = text_block_fnl! {
+        "// This file was generated, do not edit"
+        ""
+        "// sane-fmt-ignore-file"
+    };
     write_definition_file::<_, (Input, Output)>(
         target,
         DefinitionFileOptions {
