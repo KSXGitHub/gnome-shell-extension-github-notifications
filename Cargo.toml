@@ -27,7 +27,7 @@ text-block-macros = "0.2.0"
 typescript-type-def = { version = "0.5.13", features = ["json_value"] }
 
 [profile.release]
-opt-level = "s"
+opt-level = "z"
 strip = true
 lto = true
 panic = "abort"
