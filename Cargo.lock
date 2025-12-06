@@ -371,6 +371,7 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "text-block-macros",
  "typescript-type-def",
 ]
 
@@ -984,6 +985,12 @@ dependencies = [
  "rustix",
  "windows-sys 0.52.0",
 ]
+
+[[package]]
+name = "text-block-macros"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1ecd6317fa97541e6cfcdf79c1917ccb8f7a10ec9ece27aaadf5b2b6ccad3e8"
 
 [[package]]
 name = "tinyvec"

@@ -8,6 +8,7 @@ use std::{
     io::{stdin, stdout},
     process::ExitCode,
 };
+use text_block_macros::text_block;
 
 #[derive(Debug)]
 pub struct App;
@@ -27,6 +28,15 @@ pub enum ParseResult<'a> {
     Failure(ParseError<'a>),
 }
 
+static HELP: &str = text_block! {
+    "Binary helper for the GitHub Notifications GNOME extension"
+    ""
+    "USAGE: Pipe a JSON object of type Input to stdin of this program and receive result via stdout"
+    ""
+    "FLAGS:"
+    "  --help, -h: See this message"
+};
+
 impl App {
     pub fn parse<'a, Argument, ArgumentList>(argv: &'a ArgumentList) -> ParseResult<'a>
     where
@@ -39,12 +49,7 @@ impl App {
 
         match argv.as_ref().get(1).map(AsRef::as_ref) {
             Some("--help" | "-h" | "help") => {
-                println!("Binary helper for the GitHub Notifications GNOME extension");
-                println!();
-                println!("USAGE: Pipe a JSON object of type Input to stdin of this program and receive result via stdout");
-                println!();
-                println!("FLAGS:");
-                println!("  --help, -h: See this message");
+                println!("{HELP}");
                 ParseResult::Exit(ExitCode::SUCCESS)
             }
             Some(first_arg) => first_arg
