@@ -11,6 +11,7 @@ use std::{
 use text_block_macros::text_block;
 
 #[derive(Debug)]
+#[non_exhaustive]
 pub struct App;
 
 #[derive(Debug, Display)]
